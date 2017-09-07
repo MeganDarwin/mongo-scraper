@@ -25,9 +25,15 @@
   </div>
 </div>
 <main>
+
+            <div class="articles-wrapper container">
+    <div class="articles row">
+        <div class="col-lg-10 col-lg-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
+            <h2 class="savedHeader">Your saved articles</h2>
+    {{#if savedArticles}}
+            <main>
     <div class="row">
-  {{#if articles}}
-      {{#each articles}}
+      {{#each savedArticles}}
         <div class="col-sm-6 box">
   <div class = "card-deck">
   <div class="card">
@@ -36,23 +42,31 @@
     <p class="card-text">{{summary}}</p>
     <p class = "card-text"><a href="{{link}}">Read The Full Article Here</a>
         <br></br>
-      <form action='/save' method='POST'>
-         <input type='hidden'>
-         <button type='submit'class="save btn btn-primary">Save Article</button>
-      </form>
-
-  </div>
-  </div>
-  </div>
-        </div> 
-        {{/each}} 
-         {{else}}
-            <div class="col-sm-6 box">
-                <p>No articles found! Try <a href="/scrape">scraping for some</a></p>
+           <form class="create-update-form" action="/articles/{{this._id}}" method="POST">
+                <input placeholder="Comment" data-id="{{this._id}}" id="notes" type="text" name="body"></input>
+                
+                <div class="btn-group-md" role="group" aria-label="...">
+                  <button type="submit" data-id="{{this._id}}" action="/articles/{{this._id}}" method="POST" id="savenote" class="btn btn-success">Add Note</button>
+                  <button type="submit" data-id="{{this.note}}" action="/delete/{{this.note}}?method=delete" method="DELETE"id="deleteNote" class="btn btn-danger">Delete Note</button>
                 </div>
-            {{/if}}
- 
+              </form>
+          </ul>
+          <h4 class="center"> Notes </h4>
+          <div id="box"> 
+            <h5>{{this.note.body}}</h5>
+          </div>  
         </div>
+    
 
+      </div>
 </div>
-</main>
+</div>
+      {{/each}} 
+            {{else}}
+            
+                <p>No articles saved! Try <a href="/scrape">scraping for some</a>, then click "Save".</p>
+            {{/if}}
+        </div>
+    </div><!--/end articles row-->
+</div><!-- /end main container-->
+

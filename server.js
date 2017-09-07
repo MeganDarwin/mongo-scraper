@@ -5,7 +5,8 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var request = require("request");
 var cheerio = require("cheerio");
-
+var exphbs = require("express-handlebars");
+var methodOverride = require("method-override");
 
 // Requiring our Note and Article models
 var Note = require("./models/note.js");
@@ -19,11 +20,18 @@ mongoose.Promise = Promise;
 // Initialize Express
 var app = express();
 
+// Set Handlebars.
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
 // Use morgan and body parser with our app
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
   extended: false
 }));
+
+// Override with POST having ?_method=DELETE
+app.use(methodOverride("_method"));
 
 // Make public a static dir
 app.use(express.static("public"));
